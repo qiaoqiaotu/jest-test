@@ -1,7 +1,8 @@
 import { shallowMount } from "@vue/test-utils";
 import Header from "../../components/Header.vue";
+import { findTestWrapper } from "../../../../utils/testUtils";
 const wrapper = shallowMount(Header); // Header 组件
-const input = wrapper.find('[data-test="input"]'); // input 框
+const input = findTestWrapper(wrapper, "input"); // input 框
 const data = wrapper.vm.$data; // data
 
 it("Header 样式发生改变时，提示", () => {
