@@ -2,7 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import TodoList from "../../TodoList.vue";
 import UndoList from "../../components/UndoList.vue";
 const todoList = shallowMount(TodoList);
-const data = todoList.vm.$data;
+const data = todoList.vm;
 describe("TodoList 组件", () => {
   it("初始化时，undoList 应该为空", () => {
     expect(data.undoList).toEqual([]);
@@ -87,6 +87,7 @@ describe("TodoList 组件", () => {
       ]
     });
     todoList.vm.changeItemValue({ value: "444", index: 0 });
+    console.log(data.undoList[0]);
     expect(data.undoList).toEqual([
       { status: "input", value: "444" },
       { status: "div", value: 2 },
