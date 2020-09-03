@@ -10,11 +10,20 @@
         v-for="(item, index) in list"
         :key="index"
         data-test="item"
+        @click="changeStatus(index)"
       >
-        {{ item }}
+        <input
+          class="input"
+          v-if="item.status === 'input'"
+          data-test="input"
+          :value="item.value"
+          @blur="handleInputBlur"
+          @change="handleInputChange(index)"
+        />
+        <span v-else>{{ item.value }}</span>
         <span
           data-test="delete-button"
-          @click="handleDelete(index)"
+          @click="e => handleDelete(e.target.value, index)"
           class="delete"
         >
           -
@@ -26,7 +35,7 @@
 
 <script>
 export default {
-  name: 'UndoList',
+  name: "UndoList",
   props: {
     list: {
       type: Array,
@@ -35,11 +44,20 @@ export default {
   },
   components: {},
   methods: {
-    handleDelete (index) {
-      this.$emit('delete', index)
+    handleDelete(index) {
+      this.$emit("delete", index);
+    },
+    changeStatus(index) {
+      this.$emit("status", index);
+    },
+    handleInputBlur() {
+      this.$emit("reset");
+    },
+    handleInputChange(value, index) {
+      this.$emit("change", { value, index });
     }
   }
-}
+};
 </script>
 
 <style lang="stylus">
@@ -73,6 +91,10 @@ export default {
       border-left 5px solid #629A9A
       border-radius 3px
       text-indent 10px
+      .input
+        height 22px
+        width 460px
+        text-indent 10px
       .delete
         float right
         margin-top 5px
